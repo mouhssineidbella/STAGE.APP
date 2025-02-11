@@ -1,0 +1,19 @@
+{
+    "name": "n/notification_system",
+    "description": "A system for managing notification and document generation",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "N\\NotificationSystem\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "DevConnect User",
+            "email": "user@devconnect.com"
+        }
+    ],
+    "require": {
+        "phpoffice/phpword": "^1.3"
+    }
+}
