@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $delivery_date = $_POST['delivery_date'] ?? '';
 
     // تحميل القالب الصحيح
-    $templatePath = "templates/محضر التبليغ التلقائي.docx";
+    $templatePath = "templates/محضر التبليغ التلقائي - Copie.docx";
     $outputFile = "محضر_التبليغ_" . time() . ".docx";
 
     // التحقق من وجود القالب
@@ -27,17 +27,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // إنشاء معالج القالب
     $templateProcessor = new TemplateProcessor($templatePath);
+    
 
     // استبدال القيم داخل المستند
     $templateProcessor->setValue('{FILE_NUMBER}', $file_number);
-    $templateProcessor->setValue('{Request_Number}', $request_number);
-    $templateProcessor->setValue('{Decision_Number}', $decision_number);
-    $templateProcessor->setValue('{Decision_Date}', $decision_date);
+    $templateProcessor->setValue('{Request_Number}', (string)$request_number);
+    $templateProcessor->setValue('{Decision_Number}', (string)$decision_number);
+    $templateProcessor->setValue('{Decision_Date}', (string)$decision_date);
     $templateProcessor->setValue('{Name_of_the_recipient1}', $recipient_name1);
     $templateProcessor->setValue('{Address_of_the_recipient1}', $recipient_address1);
     $templateProcessor->setValue('{Name_of_the_recipient2}', $recipient_name2);
     $templateProcessor->setValue('{Address_of_the_recipient2}', $recipient_address2);
-    $templateProcessor->setValue('{Notification_Report_Date}', $delivery_date);
+    $templateProcessor->setValue('{Notification_Report_Date}', (string)$delivery_date);
+    
     
     // حفظ الملف الجديد
     $templateProcessor->saveAs($outputFile);
