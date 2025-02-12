@@ -31,14 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // استبدال القيم داخل المستند
     $templateProcessor->setValue('{FILE_NUMBER}', $file_number);
-    $templateProcessor->setValue('{Request_Number}', (string)$request_number);
-    $templateProcessor->setValue('{Decision_Number}', (string)$decision_number);
-    $templateProcessor->setValue('{Decision_Date}', (string)$decision_date);
+    $templateProcessor->setValue('{REQUEST_NUMBER}', (string)$request_number);
+    $templateProcessor->setValue('{DECISION_NUMBER}', (string)$decision_number);
+    $templateProcessor->setValue('{DECISION_DATE}', (string)$decision_date);
     $templateProcessor->setValue('{Name_of_the_recipient1}', $recipient_name1);
-    $templateProcessor->setValue('{Address_of_the_recipient1}', $recipient_address1);
+    $templateProcessor->setValue('{address_of_the_recipient1}', $recipient_address1);
     $templateProcessor->setValue('{Name_of_the_recipient2}', $recipient_name2);
-    $templateProcessor->setValue('{Address_of_the_recipient2}', $recipient_address2);
-    $templateProcessor->setValue('{Notification_Report_Date}', (string)$delivery_date);
+    $templateProcessor->setValue('{address_of_the_recipient2}', $recipient_address2);
+    $templateProcessor->setValue('{NOTIFICATION_REPORT_DATE}', (string)$delivery_date);
     
     
     // حفظ الملف الجديد
