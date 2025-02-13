@@ -32,7 +32,7 @@
 
 <div class="container my-5">
     <h3 class="text-center mb-4">📄 إدخال بيانات التبليغ</h3>
-    <form action="generate_word.php" method="post" class="border border-3 p-4 rounded">
+    <form id="notificationForm" class="border border-3 p-4 rounded">
         
         <div class="mb-3">
             <label>📌 رقم الملف:</label>
@@ -80,12 +80,40 @@
         </div>
 
         <div class="d-grid gap-2">
-            <button type="submit" name="type" value="notification" class="btn btn-primary btn-custom">🔹 تحميل محضر التبليغ</button>
-            <button type="submit" name="type" value="filing" class="btn btn-secondary btn-custom">🔹 تحميل طي التبليغ</button>
+            <button type="submit" onclick="setFormAction('generate_word.php')" class="btn btn-primary btn-custom">🔹 تحميل محضر التبليغ</button>
+            <button type="button" onclick="submitFilingForm()" class="btn btn-secondary btn-custom">🔹 تحميل طي التبليغ</button>
         </div>
 
     </form>
 </div>
+
+<script>
+    function setFormAction(action) {
+        document.getElementById('notificationForm').action = action;
+        document.getElementById('notificationForm').submit();
+    }
+
+    function submitFilingForm() {
+        let formData = new FormData(document.getElementById("notificationForm"));
+
+        fetch("generate_filing.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(files => {
+            files.forEach(file => {
+                let a = document.createElement("a");
+                a.href = file;
+                a.download = decodeURIComponent(file); // فك ترميز Unicode
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+        })
+        .catch(error => console.error("Error:", error));
+    }
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
