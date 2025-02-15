@@ -32,7 +32,7 @@
 
 <div class="container my-5">
     <h3 class="text-center mb-4">📄 إدخال بيانات التبليغ</h3>
-    <form id="notificationForm" class="border border-3 p-4 rounded">
+    <form id="notificationForm" method="POST" action="generate_word.php" class="border border-3 p-4 rounded">
         
         <div class="mb-3">
             <label>📌 رقم الملف:</label>
@@ -80,8 +80,8 @@
         </div>
 
         <div class="d-grid gap-2">
-            <button type="submit" onclick="setFormAction('generate_word.php')" class="btn btn-primary btn-custom">🔹 تحميل محضر التبليغ</button>
-            <button type="button" onclick="submitFilingForm()" class="btn btn-secondary btn-custom">🔹 تحميل طي التبليغ</button>
+        <button type="submit" class="btn btn-primary btn-custom">🔹 تحميل محضر التبليغ</button>
+        <button type="button" onclick="submitFilingForm()" class="btn btn-secondary btn-custom">🔹 تحميل طي التبليغ</button>
         </div>
 
     </form>

@@ -28,7 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // إنشاء معالج القالب
     $templateProcessor = new TemplateProcessor($templatePath);
     
-
     // استبدال القيم داخل المستند
     $templateProcessor->setValue('{FILE_NUMBER}', $file_number);
     $templateProcessor->setValue('{REQUEST_NUMBER}', (string)$request_number);
@@ -40,18 +39,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $templateProcessor->setValue('{address_of_the_recipient2}', $recipient_address2);
     $templateProcessor->setValue('{NOTIFICATION_REPORT_DATE}', (string)$delivery_date);
     
-    
     // حفظ الملف الجديد
     $templateProcessor->saveAs($outputFile);
 
-    // تحميل الملف للمستخدم
+    // التأكد من أن الملف تم إنشاؤه
+    if (!file_exists($outputFile)) {
+        die("❌ فشل إنشاء ملف التبليغ.");
+    }
+
+    // إعداد الرؤوس (Headers) لضمان التحميل الصحيح
     header("Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     header("Content-Disposition: attachment; filename=" . basename($outputFile));
     header("Content-Length: " . filesize($outputFile));
+    header("Cache-Control: no-cache, must-revalidate");
+    header("Expires: 0");
+
+    // تنظيف المخرجات قبل الإرسال
+    ob_clean();
+    flush();
+    
+    // إرسال الملف للمستخدم
     readfile($outputFile);
 
-    // حذف الملف بعد التحميل (اختياري)
-    unlink($outputFile);
+    // حذف الملف بعد التحميل مباشرةً
+    if (file_exists($outputFile)) {
+        unlink($outputFile);
+    }
+
     exit;
 }
 ?>
