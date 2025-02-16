@@ -1,0 +1,71 @@
+<?php
+
+require 'vendor/autoload.php'; // تحميل مكتبة PHPWord
+
+use PhpOffice\PhpWord\TemplateProcessor;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // استقبال البيانات من النموذج
+    $file_number = $_POST['file_number'] ?? '';
+    $request_number = $_POST['request_number'] ?? '';
+    $decision_number = $_POST['decision_number'] ?? '';
+    $decision_date = $_POST['decision_date'] ?? '';
+    $recipient_name1 = $_POST['recipient_name1'] ?? '';
+    $recipient_address1 = $_POST['recipient_address1'] ?? '';
+    $recipient_name2 = $_POST['recipient_name2'] ?? '';
+    $recipient_address2 = $_POST['recipient_address2'] ?? '';
+    $delivery_date = $_POST['delivery_date'] ?? '';
+
+    // تحميل القالب الصحيح
+    $templatePath = "templates/محضر التبليغ التلقائي - Copie.docx";
+    $outputFile = "محضر_التبليغ_" . time() . ".docx";
+
+    // التحقق من وجود القالب
+    if (!file_exists($templatePath)) {
+        die("❌ ملف القالب غير موجود! تأكد من أن المسار صحيح: " . $templatePath);
+    }
+
+    // إنشاء معالج القالب
+    $templateProcessor = new TemplateProcessor($templatePath);
+    
+    // استبدال القيم داخل المستند
+    $templateProcessor->setValue('{FILE_NUMBER}', $file_number);
+    $templateProcessor->setValue('{REQUEST_NUMBER}', (string)$request_number);
+    $templateProcessor->setValue('{DECISION_NUMBER}', (string)$decision_number);
+    $templateProcessor->setValue('{DECISION_DATE}', (string)$decision_date);
+    $templateProcessor->setValue('{Name_of_the_recipient1}', $recipient_name1);
+    $templateProcessor->setValue('{address_of_the_recipient1}', $recipient_address1);
+    $templateProcessor->setValue('{Name_of_the_recipient2}', $recipient_name2);
+    $templateProcessor->setValue('{address_of_the_recipient2}', $recipient_address2);
+    $templateProcessor->setValue('{NOTIFICATION_REPORT_DATE}', (string)$delivery_date);
+    
+    // حفظ الملف الجديد
+    $templateProcessor->saveAs($outputFile);
+
+    // التأكد من أن الملف تم إنشاؤه
+    if (!file_exists($outputFile)) {
+        die("❌ فشل إنشاء ملف التبليغ.");
+    }
+
+    // إعداد الرؤوس (Headers) لضمان التحميل الصحيح
+    header("Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    header("Content-Disposition: attachment; filename=" . basename($outputFile));
+    header("Content-Length: " . filesize($outputFile));
+    header("Cache-Control: no-cache, must-revalidate");
+    header("Expires: 0");
+
+    // تنظيف المخرجات قبل الإرسال
+    ob_clean();
+    flush();
+    
+    // إرسال الملف للمستخدم
+    readfile($outputFile);
+
+    // حذف الملف بعد التحميل مباشرةً
+    if (file_exists($outputFile)) {
+        unlink($outputFile);
+    }
+
+    exit;
+}
+?>
