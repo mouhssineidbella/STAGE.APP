@@ -42,11 +42,17 @@
     <label>📌 رقم الطلب:</label>
     <input type="text" id="request_number" name="request_number" class="form-control p-3" required>
 
-    <label>📌 اسم المستلم:</label>
+    <label>📌 اسم المستلم 1:</label>
     <input type="text" id="recipient_name1" name="recipient_name1" class="form-control p-3" required>
 
-    <label>📌 عنوان المستلم:</label>
+    <label>📌 عنوان المستلم 1:</label>
     <input type="text" id="recipient_address1" name="recipient_address1" class="form-control p-3" required>
+
+    <label>📌 اسم المستلم 2:</label>
+    <input type="text" id="recipient_name2" name="recipient_name2" class="form-control p-3">
+
+    <label>📌 عنوان المستلم 2:</label>
+    <input type="text" id="recipient_address2" name="recipient_address2" class="form-control p-3">
 
     <label>📌 تاريخ التبليغ:</label>
     <input type="date" id="delivery_date" name="delivery_date" class="form-control p-3" required>
@@ -77,7 +83,6 @@ function debugForm() {
     return true;
 }
 </script>
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
